@@ -1,14 +1,20 @@
-import { render, screen } from '@testing-library/react'
-import Home from '@/pages/index'
+import { render, fireEvent} from '@testing-library/react';
+import '@testing-library/jest-dom';
+import Home from '../pages/index';
 
-describe('Home', () => {
-  it('renders a heading', () => {
-    render(<Home />)
+test('renders correctly' , () =>{
+  const {container, getByText,getByTestId} = render(<Home />);
+  expect(getByText('Unlimited movies, TV, shows, and more.')).toBeInTheDocument();
+});
+it('changes the language',() =>{
+  const handleChange = jest.fn();
 
-    const heading = screen.getByRole('heading', {
-      name: /welcome to next\.js!/i,
-    })
+  const {container, getByText,getByTestId} = render(<Home />);
+  const selectLang = getByTestId('change-lang-select') as HTMLSelectElement;
+  fireEvent.change(selectLang,handleChange);
+  
 
-    expect(heading).toBeInTheDocument()
-  })
-})
+  expect(selectLang).toBeTruthy();
+
+
+});   
