@@ -20,8 +20,10 @@ const SignInNav :NextPage = ():JSX.Element => {
   return (
     <div className='nav w-full flex items-center sm:flex-col md:bg-black' id='nav'>
         <div className="image w-[200px] lg:w-[150px] cursor-pointer">
-          <Link href='/'>
+          <Link href='/' >
+            <div className="navbar-brand">
             <Image id='logo' src={logo} priority className=''  />
+            </div>
           </Link>
         </div>
         <div className="nav-second-column flex w-full justify-end sm:justify-center">

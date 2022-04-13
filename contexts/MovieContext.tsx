@@ -1,5 +1,6 @@
 import {createContext,useState} from 'react';
 import { useQuery,dehydrate,QueryClient } from 'react-query';
+import MovieLoading from '../components/movies_series/movie_loading'
 
 let initValue:any;
 // fetching movies api s
@@ -36,7 +37,7 @@ export const MovieProvider = (props:any) => {
   const [isSelected,setIsSelected] = useState<Boolean>(false);
 
   if(popularMovies.isLoading || movie.isLoading || topMovies.isLoading || comingMovies.isLoading || comingMovies.isLoading ||actionMovies.isLoading  || popularSeries.isLoading || topSeries.isLoading || comingSeries.isLoading  ){
-    return <div>isLoading</div>
+    return <div><MovieLoading/></div>
   }
   return (
     <MovieContext.Provider value={{moviesSeries:[movie,popularMovies,topMovies,comingMovies,actionMovies,popularSeries,topSeries,comingSeries],selectedMovies:[isSelected,setIsSelected,selectedMovie,setSelectedMovie],dataMoviesSeries:{}}}>

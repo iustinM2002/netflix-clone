@@ -4,7 +4,7 @@ import { MovieContext } from '../../contexts/MovieContext';
 import TableLayout from './table_layout';
 const MovieTableBody = () => {
     const {moviesSeries}= useContext(MovieContext);
-    const [movie,popularMovies,topMovies,comingMovies,popularSeries,topSeries,comingSeries] = moviesSeries;
+    const [movie,popularMovies,topMovies,comingMovies,actionMovies,popularSeries,topSeries,comingSeries] = moviesSeries;
     const movies= [...popularMovies.data.results,...topMovies.data.results,...comingMovies.data.results]
     
     

@@ -9,6 +9,7 @@ import Footer from '../components/footer/footer';
 import { Data } from '../data';
 // context provider
 import { LanguageProvider } from 'contexts/language';
+import { RegisterProvider } from 'contexts/registerContext';
 
 // importing images
 
@@ -19,22 +20,10 @@ const Home: NextPage = () :JSX.Element => {
     roText: string[];
     index: number;
 }
-type itemProp= {
-  enText: string[];
-  roText: string[];
-} | {
-  enText: string[];
-  roText: string[];
-} | {
-  enText: string[];
-  roText: string[];
-} | {
-  enText: string[];
-  roText: string[];
-} | {
-  enText: string[];
-  roText: string[];
-} 
+  type itemProp= {
+    enText: string[];
+    roText: string[];
+  } 
   return (
     <LanguageProvider>
     <div>

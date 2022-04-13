@@ -5,12 +5,13 @@ import Footer from '../components/footer/footer';
 import Nav from '../components/signin/signinNav';
 // providers and prisma
 import { LanguageProvider } from 'contexts/language';
-import SignInBody from '@/components/signin/sign_in_body';
+import SignInBody from '../components/signin/sign_in_body';
 import {LoginProvider} from 'contexts/loginContext';
 import { PrismaClient } from '@prisma/client';
 
 interface SignInProps{
-  initialContacts:[]
+  initialContacts:[],
+  onSubmit: () => void
 }
 
 const prisma = new PrismaClient()
@@ -23,7 +24,7 @@ export async function getServerSideProps(){
     }
   }
 
-const SignIn:NextPage<SignInProps> = ({initialContacts}):JSX.Element => {
+const SignIn:NextPage<SignInProps> = ({initialContacts,onSubmit= () => console.log('test')}):JSX.Element => {
 
   return (
     <LanguageProvider>

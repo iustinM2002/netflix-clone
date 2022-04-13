@@ -6,19 +6,32 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
 // context
 import { LangContext } from 'contexts/language';
+import { RegisterContext } from 'contexts/registerContext';
 // yup & react hook form
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+
+interface dataContact{
+  email:string,
+  password?:string
+}
+interface FormValues extends Record<string,any>{
+  email:string,
+  password?:string
+}
+
 const schema = yup.object().shape({
   email: yup.string().required()
 });
 const Email:NextPage = ():JSX.Element => {
   const [lang] = useContext(LangContext);
-  const {register,handleSubmit} = useForm({
+  const [registerData,dispatch] = useContext(RegisterContext);
+  const {register,handleSubmit} = useForm<FormValues>({
     resolver:yupResolver(schema)
   });
-  const onSubmit = (data:{}) =>{
+  const onSubmit = (data:dataContact) =>{
+      dispatch({type:'ADD_USER',payload:{data:data.email}})
       Router.push('sign_up')
   }
   

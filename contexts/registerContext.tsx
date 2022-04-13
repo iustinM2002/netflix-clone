@@ -1,9 +1,15 @@
 import React,{createContext,useReducer} from 'react';
 
-let initValue:any;
-export const LoginContext = createContext(initValue);
+let initValue!:(string | React.Dispatch<React.SetStateAction<string>>)[] | any;
+export const RegisterContext = createContext(initValue);
+interface actionType{
+    type:string,
+    payload:{
+        data:{}
+    }
+}
 
-function loginReducer(user:any,action:any){
+function registerReducer(user:{},action:actionType){
     switch(action.type){
         case 'ADD_USER':
             return newUser(action.payload.data)
@@ -14,12 +20,12 @@ function newUser(data:any){
     return data;
 }
 
-export const LoginProvider = (props:any,{initialContacts}:{initialContacts:any}) => {
-    const [loginData,dispatch] = useReducer(loginReducer,{email:'',password:""})
+export const RegisterProvider = (props:any,{initialContacts}:{initialContacts:{}}) => {
+    const [registerData,dispatch] = useReducer(registerReducer,{email:'',password:""})
     return (
-        <LoginContext.Provider value={[loginData,dispatch]}>
+        <RegisterContext.Provider value={[registerData,dispatch]}>
             {props.children}
-        </LoginContext.Provider>
+        </RegisterContext.Provider>
 
    
   )

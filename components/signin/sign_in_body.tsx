@@ -1,4 +1,4 @@
-import { useState,useContext } from "react";
+import { useState,useContext,useEffect } from "react";
 import Router from "next/router";
 import { NextPage } from "next";
 // context
@@ -8,10 +8,21 @@ import { LangContext } from "contexts/language";
 import * as yup from "yup";
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+// interfaces
+
 interface SignInProps{
     initialContacts:[]
 }
+interface dataContact{
+    email:string,
+    password:string
+}
+interface FormValues extends Record<string,any>{
+    email:string,
+    password:string
+}
 
+// yup schema
 const schema = yup.object().shape({
     email: yup.string().required(),
     password : yup.string().required()
@@ -19,32 +30,41 @@ const schema = yup.object().shape({
 })
 
 const SignInBody: NextPage<SignInProps> = ({initialContacts}) => {
-    const  {register,handleSubmit} = useForm({
+   
+    const  {register,handleSubmit} = useForm<FormValues>({
         resolver: yupResolver(schema)
     });
     // declaring state
     const [learnButton ,setLearnButton] = useState<Boolean>(false);
-    const [err,setErr] = useState('');
+    const [err,setErr] = useState<string>('');
     const [passwordVis,setPasswordVis] = useState<string>('show');
     const [passwordBtn,setPasswordBtn] = useState<Boolean>(false);
     // deconstruct context
-    const [loginData,dispatch] = useContext(LoginContext);
+    const [loginData,dispatch,isLogged,setIsLogged] = useContext(LoginContext);
     const [lang] = useContext(LangContext)
     //function for submiting data
-    const onSubmit = (data:any) => {
+    const onSubmit = (data:dataContact)   => {
         dispatch({type:'ADD_USER',payload:{data:data}});
-        initialContacts.forEach((contact:any) =>{
+        initialContacts.forEach((contact:dataContact) =>{
             if(contact.email === data.email && contact.password === data.password){
                 Router.push('/movies')
+                setIsLogged(true);
                 setErr('')
             }else{
                 setErr('Email and password invalid, please try again.')
             }
         })
-
+        
     }
+    // useEffect(()=>{
+    //     if(isLogged)
+    //     sessionStorage.setItem('logged','true')
+
+    // },[])
+    
     // implement function for showing or hidding password
-    const showHidePassHandler = () : void =>{
+    const showHidePassHandler = (e:any) : void =>{
+        e.preventDefault()
         if(passwordVis === 'show'){
             setPasswordVis('hide')
         }else{
@@ -58,19 +78,19 @@ const SignInBody: NextPage<SignInProps> = ({initialContacts}) => {
             <div className="signin-intro w-[70%] mx-auto">
                 <h2 className='text-white text-[2rem] font-bold  md:text-[1.5rem]' >Sign In</h2>
             </div>
-            <input autoComplete='off'  className='w-[70%] rounded-[0.3rem] mx-auto py-[0.8rem] my-[1rem] bg-[#333333] px-[1rem] text-white' type="email" placeholder={lang ==='en' ? "Email or phone number" : 'Email sau numar de telefon'} required {...register('email' ,{required: lang === 'en' ? 'Please enter a valid email adress or phone number.' : 'Introdu o adresa de e-mail valida sau un numar de telefon valabil.'})}/>
+            <input autoComplete='off' data-testid="email-input" className='w-[70%] rounded-[0.3rem] mx-auto py-[0.8rem] my-[1rem] bg-[#333333] px-[1rem] text-white' type="email" placeholder={lang ==='en' ? "Email or phone number" : 'Email sau numar de telefon'} required {...register('email' ,{required: lang === 'en' ? 'Please enter a valid email adress or phone number.' : 'Introdu o adresa de e-mail valida sau un numar de telefon valabil.'})}/>
             <div className="password w-[70%] rounded-[0.3rem] mx-auto  bg-[#333333]  text-white relative">
-                <input className='py-[0.8rem] px-[1rem] w-full bg-[#333333] ' type={passwordVis === 'show' ? 'password' : 'text'} placeholder={lang ==='en' ? "Password" : 'Parola'} onClick={() => setPasswordBtn(true)} {...register('password',{required:true,minLength:8})} />
+                <input className='py-[0.8rem] px-[1rem] w-full bg-[#333333] ' data-testid="password-input" type={passwordVis === 'show' ? 'password' : 'text'} placeholder={lang ==='en' ? "Password" : 'Parola'} onClick={() => setPasswordBtn(true)} {...register('password',{required:true,minLength:8})} />
                 
                 {passwordBtn?
-                <button className='text-[#7f7d7d] absolute top-[50%] translate-y-[-50%]  right-[5%]' onClick={showHidePassHandler}>{passwordVis.toLocaleUpperCase()}</button>
+                <button  className='text-[#7f7d7d] absolute top-[50%] translate-y-[-50%]  right-[5%]' onClick={showHidePassHandler}>{passwordVis.toLocaleUpperCase()}</button>
                 : ''}
             </div>
-            <button type='submit' className='text-white bg-[#ff0000] w-[70%] mx-auto mt-[2.5rem] text-[1.1rem] font-bold py-[0.8rem] rounded-[0.3rem]' >{lang === 'en' ? "Sign In" : 'Conectare'}</button>
+            <button type='submit' className='text-white bg-[#ff0000] w-[70%] mx-auto mt-[2.5rem] text-[1.1rem] font-bold py-[0.8rem] rounded-[0.3rem]' data-testid='submit-button' >{lang === 'en' ? "Sign In" : 'Conectare'}</button>
             <div className="remember-div text-[#B3B3B3] flex w-[70%] mx-auto justify-between pt-[0.8rem]">
                 <div className="check-box">
                     <input type="checkbox" id='remember-check' className='' /> 
-                    <label htmlFor="remember-check" className='text-[0.9rem] pl-[0.2rem]'>{lang === 'en' ? 'Remember me' : 'Memorare utilizator'}</label>
+                    <label htmlFor="remember-check" className='text-[0.9rem] pl-[0.2rem]'>{lang === 'en' ? 'Remember me' : 'Memorare utilizator'} </label>
                 </div>
                 <div className="p text-[0.9rem]">{lang === 'en' ? 'Need help?' : 'Ai nevoie de ajutor ?'}</div>
             </div>
