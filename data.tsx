@@ -4,7 +4,15 @@ type data = [
     page3 : {enText:string[],roText:string[]},
     page4 : {enText:string[],roText:string[]},
     page4 ? : {enText:string[],roText:string[]},
-]
+];
+export interface dataContact{
+    email:string,
+    password?:string
+  }
+export interface FormValues extends Record<string,any>{
+    email:string,
+    password?:string
+  }
 
 export const Data:data = [
         

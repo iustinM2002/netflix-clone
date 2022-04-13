@@ -7,6 +7,8 @@ import SelectedMovie from './selectedMovie';
 import { MovieContext } from 'contexts/MovieContext';
 import { motion } from 'framer-motion';
 import MovieLoading from './movie_loading';
+// uuid 
+import { uuid } from 'uuidv4';
 
 const MoviesBody:NextPage = ():JSX.Element => {
     interface refElement {
@@ -76,7 +78,7 @@ const MoviesBody:NextPage = ():JSX.Element => {
 
                 </div>
                 <motion.div    drag='x' dragConstraints={{right:0,left: -width}} className='movies flex w-[4500px]' onClick={()=> setWidth(carousel1.current.scrollWidth - carousel1.current.offsetWidth)}  >
-                    {obj.data.map((movie:any) => <MovieSerie  movie_serie={movie}/> )}
+                    {obj.data.map((movie:any) => <MovieSerie key={uuid()}  movie_serie={movie}/> )}
 
                 </motion.div>
             </>
@@ -91,7 +93,7 @@ const MoviesBody:NextPage = ():JSX.Element => {
 
             </div>
             <motion.div   drag='x' dragConstraints={{right:0,left: -extendedWidth}} className='movies flex w-[21000px]' onClick={()=> setWidth(carousel2.current.scrollWidth - carousel2.current.offsetWidth)}  >
-            {obj.data.map((movie:any) => <MovieSerie  movie_serie={movie}/> )}
+            {obj.data.map((movie:any) => <MovieSerie key={uuid()}  movie_serie={movie}/> )}
 
             </motion.div>
         </>

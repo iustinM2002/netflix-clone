@@ -49,6 +49,7 @@ const SignInBody: NextPage<SignInProps> = ({initialContacts}) => {
             if(contact.email === data.email && contact.password === data.password){
                 Router.push('/movies')
                 setIsLogged(true);
+                sessionStorage.setItem('logged','true')
                 setErr('')
             }else{
                 setErr('Email and password invalid, please try again.')
@@ -56,11 +57,7 @@ const SignInBody: NextPage<SignInProps> = ({initialContacts}) => {
         })
         
     }
-    // useEffect(()=>{
-    //     if(isLogged)
-    //     sessionStorage.setItem('logged','true')
-
-    // },[])
+    
     
     // implement function for showing or hidding password
     const showHidePassHandler = (e:any) : void =>{
@@ -71,6 +68,8 @@ const SignInBody: NextPage<SignInProps> = ({initialContacts}) => {
             setPasswordVis('show')
         }
     }
+
+    console.log(isLogged)
 
   return (
     <div className="form flex justify-center items-center min-h-[80vh] ">

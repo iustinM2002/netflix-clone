@@ -17,7 +17,7 @@ const data = useMemo(() =>
         return {
         col1:movie.original_title || movie.original_name,
         col2:movie.overview,
-        col3:movie.original_language,
+        col3:movie.original_language.toUpperCase(),
         col4:movie.vote_average,
 
         }
