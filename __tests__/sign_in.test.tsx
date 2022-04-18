@@ -1,26 +1,28 @@
 import { render, fireEvent} from '@testing-library/react';
 import '@testing-library/jest-dom';
-import SignIn from '../pages/sign_in'
+import SignInBody from '../components/signin/sign_in_body';
+import {LoginProvider} from '../contexts/loginContext';
+import {LanguageProvider} from '../contexts/language';
 
 
-describe('Sign Up Components' ,() =>{
-    const submitMock = jest.fn();
+
+describe('Sign Im Components' ,() =>{
     let initContact:[]=[];
     it('renders component',()=>{
-        const {container} = render(<SignIn onSubmit={submitMock} initialContacts={initContact}/>)
+        const onSubmit= jest.fn();
+        const {container} = render(<LanguageProvider><LoginProvider><SignInBody onSubmit={onSubmit} initialContacts={initContact}/></LoginProvider></LanguageProvider>)
         expect(container).toBeTruthy()
     });
     it('sign in' , () =>{
         
             const onSubmit= jest.fn();
-            const {getByRole,getByPlaceholderText,getByTestId} = render(<SignIn onSubmit={onSubmit} initialContacts={initContact}/>)
+            const {getByPlaceholderText,getByTestId} = render(<LanguageProvider><LoginProvider><SignInBody onSubmit={onSubmit} initialContacts={initContact}/></LoginProvider></LanguageProvider>)
             const submitButton = getByTestId('submit-button');
-
             fireEvent.change(getByPlaceholderText(/email or phone number/i),{target:{value:'morosanuiustin@gmail.com'}})
             fireEvent.change(getByPlaceholderText(/password/i),{target:{value:'123'}});
-            fireEvent.submit(submitButton);
+            fireEvent.click(submitButton);
+            expect(onSubmit).toHaveBeenCalledTimes(0)
             
-         
     })
     
 })

@@ -11,7 +11,7 @@ import { PrismaClient } from '@prisma/client';
 
 interface SignInProps{
   initialContacts:[],
-  onSubmit: () => void
+  
 }
 
 const prisma = new PrismaClient()
@@ -24,7 +24,8 @@ export async function getServerSideProps(){
     }
   }
 
-const SignIn:NextPage<SignInProps> = ({initialContacts,onSubmit= () => console.log('test')}):JSX.Element => {
+const SignIn:NextPage<SignInProps> = ({initialContacts}):JSX.Element => {
+  let onSubmit:any;
 
   return (
     <LanguageProvider>
@@ -32,7 +33,7 @@ const SignIn:NextPage<SignInProps> = ({initialContacts,onSubmit= () => console.l
         <div id='intro'  className="border-b-[5px] border-[#383838]  bg-[url(../img/netflixbg.jpg)] bg-center bg-cover min-h-[80vh] bg-black ">
             <div className="bg-[#00000081] w-full min-h-[80vh]">
             <Nav  />
-            <SignInBody initialContacts={initialContacts}/>
+            <SignInBody initialContacts={initialContacts} onSubmit={onSubmit}/>
             </div>
             <Footer/>
         </div>

@@ -28,7 +28,6 @@ const Movies:NextPage = (): JSX.Element => {
           <MoviesBody/>
           <Footer/>
       </div>
-
   : <NotLogged/> }
     </MovieProvider>
   )

@@ -10,12 +10,13 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 // interfaces
 
-interface SignInProps{
-    initialContacts:[]
-}
 interface dataContact{
     email:string,
     password:string
+}
+interface SignInProps{
+    initialContacts:[],
+    onSubmit : (data:dataContact) => void;
 }
 interface FormValues extends Record<string,any>{
     email:string,
@@ -26,10 +27,9 @@ interface FormValues extends Record<string,any>{
 const schema = yup.object().shape({
     email: yup.string().required(),
     password : yup.string().required()
-
 })
 
-const SignInBody: NextPage<SignInProps> = ({initialContacts}) => {
+const SignInBody: NextPage<SignInProps> = ({initialContacts,onSubmit}) => {
    
     const  {register,handleSubmit} = useForm<FormValues>({
         resolver: yupResolver(schema)
@@ -43,7 +43,7 @@ const SignInBody: NextPage<SignInProps> = ({initialContacts}) => {
     const [loginData,dispatch,isLogged,setIsLogged] = useContext(LoginContext);
     const [lang] = useContext(LangContext)
     //function for submiting data
-    const onSubmit = (data:dataContact)   => {
+    onSubmit = (data:dataContact)   => {
         dispatch({type:'ADD_USER',payload:{data:data}});
         initialContacts.forEach((contact:dataContact) =>{
             if(contact.email === data.email && contact.password === data.password){
@@ -58,7 +58,6 @@ const SignInBody: NextPage<SignInProps> = ({initialContacts}) => {
         
     }
     
-    
     // implement function for showing or hidding password
     const showHidePassHandler = (e:any) : void =>{
         e.preventDefault()
@@ -68,8 +67,6 @@ const SignInBody: NextPage<SignInProps> = ({initialContacts}) => {
             setPasswordVis('show')
         }
     }
-
-    console.log(isLogged)
 
   return (
     <div className="form flex justify-center items-center min-h-[80vh] ">
@@ -103,7 +100,6 @@ const SignInBody: NextPage<SignInProps> = ({initialContacts}) => {
             </div>
             <div className="error w-[70%] mx-auto">
                 {err.length > 1 ? <p className="text-white">{err}</p> : ''}
-
             </div>
         </form>
     </div>
